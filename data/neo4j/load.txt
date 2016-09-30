@@ -1,0 +1,151 @@
+
+You are connected as user neo4j
+to the server http://localhost:7474/browser/
+
+
+//load file
+LOAD CSV WITH HEADERS FROM "file:///iliad.csv" AS line
+
+MERGE (n:MyNode {Name:line.source})
+
+MERGE (m:MyNode {Name:line.target})
+MERGE (n) -[:TO {dist:line.distance}]-> (m)
+
+
+//Viewing the graph
+
+match (n:MyNode)-[r]->(m)
+
+return n, r, m
+
+
+//Counting the number of nodes
+match (n:MyNode)
+
+return count(n)
+
+
+//Finding leaf nodes:
+match (n:MyNode)-[r:TO]->(m)
+
+where not ((m)-->())
+
+return m
+
+//Counting the number of edges
+match (n:MyNode)-[r]->()
+
+return count(r)
+
+
+//Finding root nodes:
+
+match (m)-[r:TO]->(n:MyNode)
+
+where not (()-->(m))
+
+return m
+
+//Finding triangles:
+
+match (a)-[:TO]->(b)-[:TO]->(c)-[:TO]->(a)
+
+return distinct a, b, c
+
+//Finding 2nd neighbors of HT:
+
+match (a)-[:TO*..2]-(b)
+
+where a.Name='HT'
+
+return distinct a, b
+
+//Finding 2nd neighbors of Homer:
+
+match (a)-[:TO*..2]-(b)
+
+where a.Name='HO'
+
+return distinct a, b
+
+
+//Finding the induced subgraph given a set of nodes:
+match (n)-[r:TO]-(m)
+
+where n.Name in ['HT', 'AC', 'ZE'] and m.Name in ['HT', 'AC', 'ZE']
+
+return n, r, m
+
+
+//Finding paths between specific nodes*:
+
+match p=(a)-[:TO*]-(c)
+
+where a.Name='HT' and c.Name='HE'
+
+return p limit 1
+
+
+//Finding paths between specific nodes shortest*:
+
+match p=(a)-[:TO*]-(c) where a.Name='AG' and c.Name='HE' return p order by length(p) asc limit 1
+
+
+//Finding the length between specific nodes:
+
+match p=(a)-[:TO*]-(c)
+
+where a.Name='AG' and c.Name='HL'
+
+return length(p) limit 1
+
+//Finding a shortest path between specific nodes AG HL:
+
+match p=shortestPath((a)-[:TO*]-(c))
+
+where a.Name='AG' and c.Name='HL'
+
+return p, length(p) limit 1
+
+
+//**  Find the degree of all nodes
+
+match (n:MyNode)-[r]-()
+
+return n.Name, count(distinct r) as degree
+
+order by degree DESC
+
+
+// Degree centrality  
+
+ match (n:MyNode)-[r]-(m)  
+ return n.Name, count(r) as DegreeScore  
+ order by DegreeScore desc  
+ limit 10;
+ 
+ 
+ // Find degree histogram of the graph
+
+match (n:MyNode)-[r]-()
+
+with n as nodes, count(distinct r) as degree
+
+return degree, count(nodes) order by degree asc
+
+//Save the degree of the node as a new node property
+
+match (n:MyNode)-[r]-()
+
+with n, count(distinct r) as degree
+
+set n.deg = degree
+
+return n.Name, n.deg
+
+
+
+
+
+
+

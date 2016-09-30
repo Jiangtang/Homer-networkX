@@ -3,7 +3,7 @@
 
 ### Homer's Iliad dataset in [Stanford GraphBase][1]
 
-### [**Homer’s Iliad - A Social Network Analytic Approach**][2]
+### [*Homer’s Iliad - A Social Network Analytic Approach*][2]
 
 ### [rtidatascience/connected-nx-tutorial][3]
 ### [ericmjl/Network-Analysis-Made-Simple][4]
