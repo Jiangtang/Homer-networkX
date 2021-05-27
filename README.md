@@ -1,5 +1,18 @@
 # Homer-networkX
 
+![](images/Iliad.jfif)
+
+I love Iliad, and collected several versions of it. A joyful coincidence is, I did a StrengthFinder survey and my top 5 strengths are:
+
+- Input
+- Learner
+- Intellection
+- Analytical
+- Deliberative
+
+So it's Iliad!
+
+![](images/Top5.jfif)
 
 ### Homer's Iliad dataset in [Stanford GraphBase][1]
 
